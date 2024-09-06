@@ -10,6 +10,11 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     )
 
 if __name__ == '__main__':
+    # stage1: build an application with the token
+    # stage2: build the command handler you want and link it to a method
+    # stage3: add the command handler to the application
+    # stage4: run the application
+
     application = ApplicationBuilder().token(token).build()
     start_handler = CommandHandler('start', start)
     application.add_handler(start_handler)
