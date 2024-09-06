@@ -1,6 +1,6 @@
 from telegram import InlineQueryResultArticle, InputTextMessageContent, Update
 from telegram.ext import ApplicationBuilder, ContextTypes, InlineQueryHandler
-from local_utils import token
+from local_utils import TOKEN
 
 
 async def inlineHandle(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -22,7 +22,7 @@ async def inlineHandle(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await inline_request.answer(responses)
 
 if __name__ == "__main__":
-    application = ApplicationBuilder().token(token).build()
+    application = ApplicationBuilder().token(TOKEN).build()
 
     application.add_handler(InlineQueryHandler(inlineHandle))
     application.run_polling()

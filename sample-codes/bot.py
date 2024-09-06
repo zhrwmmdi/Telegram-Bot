@@ -1,6 +1,6 @@
 from telegram import Update
 from telegram.ext import ApplicationBuilder, ContextTypes, CommandHandler
-from local_utils import token
+from local_utils import TOKEN
 
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -15,7 +15,7 @@ if __name__ == '__main__':
     # stage3: add the command handler to the application
     # stage4: run the application
 
-    application = ApplicationBuilder().token(token).build()
+    application = ApplicationBuilder().token(TOKEN).build()
     start_handler = CommandHandler('start', start)
     application.add_handler(start_handler)
     application.run_polling()

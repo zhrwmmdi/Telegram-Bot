@@ -1,6 +1,6 @@
 from telegram import Update
 from telegram.ext import ApplicationBuilder, CommandHandler, ContextTypes
-from local_utils import token
+from local_utils import TOKEN
 
 
 async def alarm(context: ContextTypes.DEFAULT_TYPE) -> None:
@@ -15,6 +15,6 @@ async def set_timer(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
 
 
 if __name__ == "__main__":
-    application = ApplicationBuilder().token(token).build()
+    application = ApplicationBuilder().token(TOKEN).build()
     application.add_handler(CommandHandler("set", set_timer))
     application.run_polling()
