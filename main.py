@@ -1,6 +1,9 @@
 import logging
+from datetime import datetime
+
 from telegram import Update
-from telegram.ext import Application, CommandHandler, ContextTypes
+from telegram.ext import Application, CommandHandler, ContextTypes, \
+    MessageHandler, filters
 from local_utils import TOKEN
 
 # Enable logging
@@ -13,6 +16,16 @@ logging.getLogger("httpx").setLevel(logging.WARNING)
 logger = logging.getLogger(__name__)
 
 
+HELP_COMMAND_RESPONSE = """
+Greetings! Here are the commands you can use with this bot:
+
+/start -> Begin interacting with the bot
+/repeat <text> -> Have the bot repeat the provided text
+/time -> Receive the current time from the bot
+/help -> Display this message again
+Feel free to utilize any of these commands as needed. If you require further assistance, don't hesitate to ask. Farewell for now!
+"""
+
 async def start_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await context.bot.send_message(
         chat_id=update.effective_chat.id,
@@ -20,12 +33,38 @@ async def start_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
     )
 
 
+async def repeat_command_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    await context.bot.send_message(
+        chat_id=update.effective_chat.id,
+        text=' '.join(context.args),
+        reply_to_message_id=update.effective_message.id
+    )
+
+
+async def time_command_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    await context.bot.send_message(
+        chat_id=update.effective_chat.id,
+        text=datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+        reply_to_message_id=update.effective_message.id
+    )
+
+
+async def help_command_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    await context.bot.send_message(
+        chat_id=update.effective_chat.id,
+        text=HELP_COMMAND_RESPONSE,
+        reply_to_message_id=update.effective_message.id
+    )
 
 if __name__=="__main__":
     # Create the Application and pass it your bot's token
     application=Application.builder().token(TOKEN).build()
 
     application.add_handler(CommandHandler('start', start_handler))
+    # application.add_handler(MessageHandler(filters.TEXT, echo_handler))
+    application.add_handler(CommandHandler('repeat', repeat_command_handler))
+    application.add_handler(CommandHandler('help', help_command_handler))
+    application.add_handler(CommandHandler('time', time_command_handler))
     # Run the Bot
     application.run_polling()
 
