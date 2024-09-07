@@ -130,6 +130,11 @@ async def stop_fact_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
         job.schedule_removal()
     await context.bot.send_message(chat_id=update.effective_chat.id, text='You\'ll no longer receive facts.')
 
+
+async def error_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    print("error:", context.error, "on Update", update)
+
+
 if __name__=="__main__":
     # Create the Application and pass it your bot's token
     application=Application.builder().token(TOKEN).build()
@@ -143,6 +148,8 @@ if __name__=="__main__":
     application.add_handler(CommandHandler('time', time_command_handler))
     application.add_handler(CommandHandler('fact', fact_sender_handler))
     application.add_handler(CommandHandler('stopFact', stop_fact_handler))
+
+    application.add_error_handler(error_handler)
     # Run the Bot
     application.run_polling()
 
